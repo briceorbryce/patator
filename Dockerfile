@@ -41,7 +41,8 @@ RUN apt-get update && apt-get install -y ninja-build build-essential git-core de
  && apt-get install -y libavutil-dev libavcodec-dev libavresample-dev \
  && rm -rf /var/lib/apt/lists/*
 WORKDIR /opt/FreeRDP
-RUN git clone https://github.com/FreeRDP/FreeRDP/ .
+#RUN git clone https://github.com/FreeRDP/FreeRDP/ .
+RUN git clone -n https://github.com/FreeRDP/FreeRDP/ . && git checkout 03d4f6a3225b7a5baa5afe1e12e1bb55c044fb79 .
 RUN cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_SSE2=ON . && cmake --build . && cmake --build . --target install
 
 WORKDIR /opt/patator
@@ -49,7 +50,7 @@ COPY ./requirements.txt ./
 RUN python3 -m pip install --upgrade pip \
   && python3 -m pip install -r requirements.txt
 
-RUN sed -e '/cx_Oracle/d' -e 's,pysqlcipher3,pysqlcipher,' requirements.txt | python2 -m pip install -r /dev/stdin
+#RUN sed -e '/cx_Oracle/d' -e 's,pysqlcipher3,pysqlcipher,' requirements.txt | python2 -m pip install -r /dev/stdin
 
 # utils
 RUN apt-get update && apt-get install -y ipython3 ipython iputils-ping iproute2 netcat curl rsh-client telnet vim mlocate nmap \
